@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 Geri Dönüşüm Karnesi</title>
+
+    <meta property="og:title" content="2025 Doğa Karnesi ♻️" />
+    <meta property="og:description" content="Ben doğaya katkımı hesapladım. Sıra sende!" />
+    <meta property="og:image" content="./sertifika-yeni.jpg" />
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DJHF47CBV7"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-DJHF47CBV7');
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: sans-serif; }
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .animate-fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body class="bg-gray-900 text-white selection:bg-green-500 selection:text-white">
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        // DOSYA İSİMLERİ (Aynı klasörde oldukları için ./ yeterli)
+        const CERTIFICATE_BG = "./sertifika-yeni.jpg";
+        const LOGO_URL = "https://i.ibb.co/FLFp4qn4/asya-ye-il-logo.jpg";
+        const VIDEO_BG = "./orman.mp4";
+
+        const App = () => {
+            const [form, setForm] = useState({ ad: '', soyad: '', kagit: '', karton: '', eatik: '' });
+            const [sonuc, setSonuc] = useState(null);
+            const [showModal, setShowModal] = useState(false);
+            const [loading, setLoading] = useState(false);
+
+            const handleInput = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
+            const hesapla = () => {
+                const k = (parseFloat(form.kagit) || 0) * 12;
+                const kr = (parseFloat(form.karton) || 0) * 12;
+                const e = (parseFloat(form.eatik) || 0) * 12;
+
+                setSonuc({
+                    co2: (k * 1.2 + kr * 1.4 + e * 20).toFixed(1),
+                    su: (k * 50 + kr * 60 + e * 200).toFixed(0),
+                    enerji: (k * 4.5 + kr * 5.2 + e * 25).toFixed(0),
+                    agac: (k * 0.017 + kr * 0.020).toFixed(1)
+                });
+                setShowModal(false);
+            };
+
+            const indir = async () => {
+                setLoading(true);
+                const element = document.getElementById('sertifika-alani');
+                if(element) {
+                    try {
+                        const canvas = await html2canvas(element, { scale: 2, useCORS: false, backgroundColor: null });
+                        const link = document.createElement('a');
+                        link.href = canvas.toDataURL("image/png");
+                        link.download = `Karnem-${form.ad}.png`;
+                        link.click();
+                    } catch(e) { alert("Hata oluştu, lütfen ekran görüntüsü alın."); }
+                }
+                setLoading(false);
+            };
+
+            return (
+                <div className="relative min-h-screen flex items-center justify-center p-4">
+                    {/* Arka Plan Video */}
+                    <div className="fixed inset-0 -z-10 bg-green-950">
+                        <video autoPlay loop muted playsInline className="w-full h-full object-cover opacity-50">
+                            <source src={VIDEO_BG} type="video/mp4" />
+                        </video>
+                    </div>
+
+                    {/* Ana Kart */}
+                    <div className="w-full max-w-4xl bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-6 md:p-8 animate-fade-in text-gray-800 border border-white/50">
+                        
+                        {/* Header */}
+                        <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+                            <div>
+                                <h1 className="text-3xl font-bold text-green-900">Geri Dönüşüm Karnesi</h1>
+                                <p className="text-green-700">2025 Yılı Çevresel Etki Raporunuz</p>
+                            </div>
+                            <img src={LOGO_URL} className="h-16 mix-blend-multiply" alt="Logo" />
+                        </div>
+
+                        {/* Form */}
+                        <div className="grid md:grid-cols-2 gap-4 mb-4">
+                            <input name="ad" placeholder="Adınız" onChange={handleInput} className="p-3 rounded-lg border border-gray-300 focus:border-green-500 outline-none" />
+                            <input name="soyad" placeholder="Soyadınız" onChange={handleInput} className="p-3 rounded-lg border border-gray-300 focus:border-green-500 outline-none" />
+                        </div>
+                        <div className="grid grid-cols-3 gap-3 mb-6">
+                            <div className="bg-white p-3 rounded-lg border text-center">
+                                <span className="text-xs font-bold text-gray-500 block">KAĞIT</span>
+                                <input name="kagit" type="number" placeholder="0" onChange={handleInput} className="w-full text-center text-lg font-bold text-green-800 outline-none" />
+                                <span className="text-[10px] text-gray-400">kg/ay</span>
+                            </div>
+                            <div className="bg-white p-3 rounded-lg border text-center">
+                                <span className="text-xs font-bold text-gray-500 block">KARTON</span>
+                                <input name="karton" type="number" placeholder="0" onChange={handleInput} className="w-full text-center text-lg font-bold text-green-800 outline-none" />
+                                <span className="text-[10px] text-gray-400">kg/ay</span>
+                            </div>
+                            <div className="bg-white p-3 rounded-lg border text-center">
+                                <span className="text-xs font-bold text-gray-500 block">E-ATIK</span>
+                                <input name="eatik" type="number" placeholder="0" onChange={handleInput} className="w-full text-center text-lg font-bold text-green-800 outline-none" />
+                                <span className="text-[10px] text-gray-400">kg/ay</span>
+                            </div>
+                        </div>
+
+                        <div className="flex gap-3 justify-center mb-6">
+                            <button onClick={() => window.location.reload()} className="px-6 py-3 bg-gray-200 hover:bg-gray-300 rounded-xl font-bold transition">Temizle</button>
+                            <button onClick={hesapla} className="px-8 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold shadow-lg transition hover:scale-105">HESAPLA</button>
+                        </div>
+
+                        {/* Sonuç Alanı */}
+                        {sonuc && (
+                            <div className="bg-green-50 p-6 rounded-xl border border-green-200 animate-fade-in">
+                                <h3 className="text-center font-bold text-green-900 mb-4">🎉 Tebrikler! 2025 Yılında Doğaya Katkın:</h3>
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 text-center">
+                                    <div className="bg-white p-3 rounded-lg shadow-sm"><div className="text-2xl font-bold text-green-600">{sonuc.co2}</div><div className="text-xs">kg CO₂</div></div>
+                                    <div className="bg-white p-3 rounded-lg shadow-sm"><div className="text-2xl font-bold text-blue-600">{sonuc.su}</div><div className="text-xs">Litre Su</div></div>
+                                    <div className="bg-white p-3 rounded-lg shadow-sm"><div className="text-2xl font-bold text-yellow-600">{sonuc.enerji}</div><div className="text-xs">kWh Enerji</div></div>
+                                    <div className="bg-white p-3 rounded-lg shadow-sm"><div className="text-2xl font-bold text-emerald-600">{sonuc.agac}</div><div className="text-xs">Ağaç</div></div>
+                                </div>
+                                <button onClick={() => setShowModal(true)} className="w-full py-4 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                                    SERTİFİKA OLUŞTUR 🎖️
+                                </button>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* --- SERTİFİKA MODAL (TAM ORTALI VERSİYON) --- */}
+                    {showModal && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm animate-fade-in">
+                            <div className="relative w-full max-w-3xl">
+                                <button onClick={() => setShowModal(false)} className="absolute -top-12 right-0 md:-right-10 text-white bg-white/20 p-2 rounded-full hover:bg-red-500 transition">✕ Kapat</button>
+                                
+                                {/* FOTOĞRAF ALANI */}
+                                <div id="sertifika-alani" className="relative w-full bg-[#fdfbf7] rounded shadow-2xl overflow-hidden">
+                                    <img src={CERTIFICATE_BG} alt="Sertifika" className="w-full h-auto block" />
+                                    
+                                    {/* YAZI YERLEŞİMİ (MÜKEMMEL ORTALAMA)
+                                        inset-0: Resmi tam kapla.
+                                        flex-col justify-center: İçeriği dikeyde tam ortaya getir.
+                                        pt-[10%]: Görselin üst süsünü geçmek için hafif aşağı it.
+                                    */}
+                                    <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-8 pt-[12%] sm:pt-[10%]">
+                                        
+                                        {/* İsim Alanı */}
+                                        <div className="font-playfair italic text-gray-800 mb-1 sm:mb-3 md:mb-6 leading-tight">
+                                            <p className="text-[2.5vw] md:text-xl">Sayın <span className="font-bold not-italic">{form.ad || 'Doğa'} {form.soyad || 'Gönüllüsü'}</span>,</p>
+                                            <p className="text-[2vw] md:text-lg opacity-80 mt-1">
+                                                2025 yılındaki geri dönüşüm faaliyetlerinizle<br/>
+                                                gezegenimize yaptığınız katkılar için teşekkür ederiz.
+                                            </p>
+                                        </div>
+
+                                        {/* Rakamlar */}
+                                        <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[2vw] md:text-lg font-playfair font-bold text-green-900 max-w-[80%]">
+                                            <div className="text-right">CO₂ Tasarrufu:</div> <div className="text-left">{sonuc.co2} kg</div>
+                                            <div className="text-right">Kurtarılan Ağaç:</div> <div className="text-left">{sonuc.agac} adet</div>
+                                            <div className="text-right">Enerji Tasarrufu:</div> <div className="text-left">{sonuc.enerji} kWh</div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                {/* Alt Butonlar */}
+                                <div className="flex justify-center gap-4 mt-6">
+                                    <button onClick={() => window.open(`https://api.whatsapp.com/send?text=Benim 2025 Doğa Karnem: ${sonuc.co2} kg CO2 tasarrufu! Sen de yap: https://asyadogakarnesi.github.io`)} className="bg-green-500 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:bg-green-600 transition">WhatsApp Paylaş</button>
+                                    <button onClick={indir} disabled={loading} className="bg-gray-700 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:bg-gray-800 transition disabled:opacity-50">
+                                        {loading ? 'Hazırlanıyor...' : 'Resmi İndir'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
