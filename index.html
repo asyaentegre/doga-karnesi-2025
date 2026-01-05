@@ -37,17 +37,20 @@
     <script type="text/babel">
         const { useState } = React;
 
-        // DOSYA YOLLARI - Logo ismi güncellendi
+        // DOSYA YOLLARI
         const CERTIFICATE_BG_IMAGE = "./sertifika-yeni.jpg";
         const ASYA_LOGO_IMAGE = "./asya-logo.png";
         const BACKGROUND_VIDEO = "./orman.mp4";
 
-        // --- İKONLAR (Renkleri mavi/turkuaz tonlarına çekildi) ---
+        // --- İKONLAR (LinkedIn ve Instagram Eklendi) ---
         const Icons = {
             Recycle: () => <svg className="w-10 h-10 text-blue-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>,
             User: () => <svg className="w-5 h-5 text-cyan-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>,
             Close: () => <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>,
-            Download: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+            Download: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>,
+            Whatsapp: () => <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.017-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>,
+            Linkedin: () => <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>,
+            Instagram: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
         };
 
         const App = () => {
@@ -72,6 +75,19 @@
                     agac: (k * 0.017) + (kr * 0.020)
                 });
                 setShowCertificate(false);
+            };
+
+            const handleShare = (platform) => {
+                const url = window.location.href; // O anki sayfa adresi
+                const text = `Asya Geri Dönüşüm Karnem: ${sonuclar.co2.toFixed(1)} kg CO2 tasarrufu!`;
+
+                if (platform === 'whatsapp') {
+                    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text + " " + url)}`, '_blank');
+                } else if (platform === 'linkedin') {
+                    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+                } else if (platform === 'instagram') {
+                    alert("Instagram'da paylaşmak için lütfen önce sertifikanızı İNDİRİN, sonra Instagram'da hikaye olarak paylaşın! 📸");
+                }
             };
 
             const handleDownload = async () => {
@@ -102,7 +118,7 @@
             return (
                 <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
                     
-                    {/* ARKA PLAN - Video katmanının arka rengi logoya uygun mavi yapıldı */}
+                    {/* ARKA PLAN */}
                     <div className="fixed inset-0 -z-10 bg-blue-950">
                         <video autoPlay loop muted playsInline className="w-full h-full object-cover opacity-50">
                             <source src={BACKGROUND_VIDEO} type="video/mp4" />
@@ -112,7 +128,7 @@
                     <div className="w-full max-w-4xl px-4 z-10">
                         <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-6 md:p-8 text-gray-800 animate-fade-in border border-white/50">
                             
-                            {/* BAŞLIK - Renkler koyu maviye çekildi */}
+                            {/* BAŞLIK */}
                             <div className="flex flex-col md:flex-row items-center justify-between mb-6 gap-4 text-center md:text-left">
                                 <div className="flex items-center gap-3">
                                     <Icons.Recycle />
@@ -124,7 +140,7 @@
                                 <img src={ASYA_LOGO_IMAGE} className="h-20 object-contain mix-blend-multiply" alt="Logo" />
                             </div>
 
-                            {/* GİRİŞ FORMU - Kenarlık ve odak renkleri mavi/turkuaz oldu */}
+                            {/* GİRİŞ FORMU */}
                             <div className="grid md:grid-cols-2 gap-4 mb-4">
                                 <div className="bg-white p-3 rounded-xl border border-cyan-100 shadow-sm focus-within:border-cyan-500 transition-colors">
                                     <label className="text-xs font-bold text-cyan-800 uppercase flex items-center gap-1 mb-1"><Icons.User/> Adınız</label>
@@ -152,11 +168,10 @@
 
                             <div className="flex justify-center gap-4 mb-6">
                                 <button onClick={() => {setAd(''); setSoyad(''); setKagit(''); setKarton(''); setElektronik(''); setSonuclar(null);}} className="px-6 py-3 bg-gray-200 rounded-xl font-bold text-gray-600 hover:bg-gray-300 transition">Temizle</button>
-                                {/* HESAPLA BUTONU - Logodaki gibi turkuazdan maviye geçişli (degrade) yapıldı */}
                                 <button onClick={hesapla} className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 rounded-xl font-bold text-white shadow-lg hover:shadow-cyan-500/30 transition transform hover:scale-105">HESAPLA</button>
                             </div>
 
-                            {/* SONUÇLAR - Arka plan açık mavi, başlık koyu mavi oldu */}
+                            {/* SONUÇLAR */}
                             {sonuclar && (
                                 <div className="bg-blue-50 rounded-xl p-6 border border-blue-100 animate-fade-in">
                                     <h3 className="text-center font-bold text-blue-900 mb-4 text-lg">Doğaya Katkınız</h3>
@@ -166,7 +181,6 @@
                                         <div className="bg-white p-4 rounded-lg shadow-sm text-center"><div className="text-2xl font-bold text-yellow-600">{sonuclar.enerji.toFixed(0)}</div><div className="text-xs text-gray-500">kWh Enerji</div></div>
                                         <div className="bg-white p-4 rounded-lg shadow-sm text-center"><div className="text-2xl font-bold text-emerald-600">{sonuclar.agac.toFixed(1)}</div><div className="text-xs text-gray-500">Ağaç</div></div>
                                     </div>
-                                    {/* SERTİFİKA OLUŞTUR BUTONU - Mavi tonlarında degrade yapıldı */}
                                     <button onClick={() => setShowCertificate(true)} className="w-full py-4 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold rounded-xl shadow-lg transition flex items-center justify-center gap-2 transform hover:scale-[1.02]">
                                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                         SERTİFİKA OLUŞTUR
@@ -178,8 +192,8 @@
 
                     {/* --- SERTİFİKA MODAL --- */}
                     {showCertificate && (
-                        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-                            <div className="relative w-full max-w-3xl">
+                        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in overflow-y-auto">
+                            <div className="relative w-full max-w-3xl my-auto">
                                 <button onClick={() => setShowCertificate(false)} className="absolute -top-12 right-0 p-2 bg-white/90 rounded-full hover:bg-red-100 text-gray-800 transition shadow-md"><Icons.Close/></button>
                                 
                                 {/* KART ALANI */}
@@ -200,7 +214,7 @@
                                             </p>
                                         </div>
 
-                                        {/* İstatistikler - Başlık renkleri logoya uygun koyu mavi yapıldı */}
+                                        {/* İstatistikler */}
                                         <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[2vw] md:text-lg font-playfair font-bold text-blue-900 -mt-1 sm:-mt-2 md:-mt-4">
                                             <div className="text-right opacity-80">CO₂ Tasarrufu:</div> <div className="text-left">{sonuclar.co2.toFixed(1)} kg</div>
                                             <div className="text-right opacity-80">Kurtarılan Ağaç:</div> <div className="text-left">{sonuclar.agac.toFixed(1)} adet</div>
@@ -210,13 +224,26 @@
                                     </div>
                                 </div>
 
-                                {/* BUTONLAR - WhatsApp butonu turkuaz/mavi yapıldı */}
-                                <div className="flex flex-wrap justify-center gap-3 mt-4">
-                                    <button onClick={() => window.open(`https://api.whatsapp.com/send?text=Benim 2025 Doğa Karnem: ${sonuclar.co2} kg CO2 tasarrufu! Sen de yap: https://asyadogakarnesi.github.io`)} className="bg-cyan-600 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:bg-cyan-700 transition flex items-center gap-2 transform hover:scale-105">
-                                        <Icons.Recycle/> WhatsApp Paylaş
+                                {/* BUTONLAR - MOBİL İÇİN DÜZENLENDİ */}
+                                <div className="flex flex-wrap justify-center gap-3 mt-4 pb-4">
+                                    {/* WhatsApp */}
+                                    <button onClick={() => handleShare('whatsapp')} className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-bold shadow-lg transition transform hover:scale-105 text-sm md:text-base">
+                                        <Icons.Whatsapp/> <span className="hidden sm:inline">WhatsApp</span>
                                     </button>
-                                    <button onClick={handleDownload} disabled={isGenerating} className="flex items-center gap-2 bg-gray-700 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:bg-gray-800 transition disabled:opacity-50 transform hover:scale-105">
-                                        {isGenerating ? '...' : <><Icons.Download/> Resmi İndir</>}
+                                    
+                                    {/* LinkedIn */}
+                                    <button onClick={() => handleShare('linkedin')} className="flex items-center gap-2 bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-full font-bold shadow-lg transition transform hover:scale-105 text-sm md:text-base">
+                                        <Icons.Linkedin/> <span className="hidden sm:inline">LinkedIn</span>
+                                    </button>
+
+                                    {/* Instagram */}
+                                    <button onClick={() => handleShare('instagram')} className="flex items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-4 py-2 rounded-full font-bold shadow-lg transition transform hover:scale-105 text-sm md:text-base">
+                                        <Icons.Instagram/> <span className="hidden sm:inline">Instagram</span>
+                                    </button>
+
+                                    {/* İndir */}
+                                    <button onClick={handleDownload} disabled={isGenerating} className="flex items-center gap-2 bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded-full font-bold shadow-lg transition disabled:opacity-50 transform hover:scale-105 text-sm md:text-base">
+                                        {isGenerating ? '...' : <><Icons.Download/> <span className="hidden sm:inline">İndir</span></>}
                                     </button>
                                 </div>
                             </div>
